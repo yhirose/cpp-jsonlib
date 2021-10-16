@@ -32,7 +32,7 @@ struct Handlers {
   std::function<void(SizeType elementCount)> EndArray;
 };
 
-inline void parse(const char* json, const Handlers& functions) {
+inline bool parse(const char* json, const Handlers& functions) {
   struct ReaderHandler : public BaseReaderHandler<UTF8<>, ReaderHandler> {
     ReaderHandler(const Handlers& functions) : functions_(functions) {}
 
@@ -135,11 +135,11 @@ inline void parse(const char* json, const Handlers& functions) {
   ReaderHandler handler(functions);
 
   Reader reader;
-  reader.Parse(ss, handler);
+  return reader.Parse(ss, handler);
 }
 
-inline void parse(const std::string& json, const Handlers& functions) {
-  parse(json.data(), functions);
+inline bool parse(const std::string& json, const Handlers& functions) {
+  return parse(json.data(), functions);
 }
 
 };  // namespace jsonlib
