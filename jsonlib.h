@@ -24,9 +24,9 @@ struct Handlers {
   std::function<void(int64_t i)> Int64;
   std::function<void(uint64_t i)> Uint64;
   std::function<void(double i)> Double;
-  std::function<void(const char* str, SizeType length, bool copy)> String;
+  std::function<void(const char* str, SizeType length)> String;
   std::function<void()> StartObject;
-  std::function<void(const char* str, SizeType length, bool copy)> Key;
+  std::function<void(const char* str, SizeType length)> Key;
   std::function<void(SizeType memberCount)> EndObject;
   std::function<void()> StartArray;
   std::function<void(SizeType elementCount)> EndArray;
@@ -85,9 +85,9 @@ inline bool parse(const char* json, const Handlers& functions) {
       return true;
     }
 
-    bool String(const char* str, SizeType length, bool copy) {
+    bool String(const char* str, SizeType length, bool /*copy*/) {
       if (functions_.String) {
-        functions_.String(str, length, copy);
+        functions_.String(str, length);
       }
       return true;
     }
@@ -99,9 +99,9 @@ inline bool parse(const char* json, const Handlers& functions) {
       return true;
     }
 
-    bool Key(const char* str, SizeType length, bool copy) {
+    bool Key(const char* str, SizeType length, bool /*copy*/) {
       if (functions_.Key) {
-        functions_.Key(str, length, copy);
+        functions_.Key(str, length);
       }
       return true;
     }
